@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface CounterState {
   count: number;
@@ -19,7 +19,7 @@ export class Counter extends React.Component<any, CounterState> {
   }
 
   fetchSomeData(): void {
-    fetch("https://jsonplaceholder.typicode.com/posts")
+    fetch('https://jsonplaceholder.typicode.com/posts')
       .then((response: Response) => response.json())
       .then((json: Post[]) => {
         this.setState({ posts: json });
@@ -32,7 +32,7 @@ export class Counter extends React.Component<any, CounterState> {
     });
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <div>
         <h2>This is a counter</h2>
