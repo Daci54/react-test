@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface ClockProps {
   name?: string;
@@ -15,17 +15,17 @@ export class Clock extends React.Component<ClockProps, ClockState> {
   }
   someTimer!: NodeJS.Timer;
 
-  componentDidMount() {
+  componentDidMount(): void {
     this.someTimer = setInterval(() => {
       this.tick();
     }, 1000);
   }
 
-  tick() {
+  tick(): void {
     this.setState({ date: new Date() });
   }
 
-  render() {
+  render(): JSX.Element {
     return (
       <div>
         <h1>Hi {this.props.name}!</h1>

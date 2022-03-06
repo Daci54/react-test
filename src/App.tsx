@@ -4,8 +4,7 @@ import { Counter } from './Components/Counter/Counter';
 
 function App(): JSX.Element {
   return (
-    <div className='App'>
-      <div>this is in app</div>
+    <div className='app-container'>
       <Counter />
     </div>
   );

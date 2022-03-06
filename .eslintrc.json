@@ -22,7 +22,7 @@
     "semi": ["error", "always"],
     "@typescript-eslint/explicit-function-return-type": [
       "error",
-      { "allowExpressions": true }
+      { "allowExpressions": true, "allowHigherOrderFunctions": true }
     ],
     "@typescript-eslint/no-explicit-any": ["off"]
   }
