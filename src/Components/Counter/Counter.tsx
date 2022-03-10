@@ -1,25 +1,16 @@
-import React, { useState } from 'react';
-
-// interface CounterState {
-//   count: number;
-//   posts: Post[];
-// }
-
-// function   incrementCount(increment: number): void {
-//   this.setState((counterState: CounterState) => {
-//     return { count: counterState.count + increment };
-//   });
-// }
+import React, { useEffect, useState } from 'react';
 
 export function Counter(): JSX.Element {
   const [count, setCount] = useState<number>(0);
 
-  function doSomething(event: any): void {
-    console.log(event);
+  function doSomething(): void {
     setCount(count + 1);
   }
 
-  console.log('counter rendered');
+  useEffect(() => {
+    console.log('in useEffect');
+    // console.log(count);
+  });
 
   return (
     <div>
