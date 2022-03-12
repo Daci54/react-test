@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Todo } from '../../Models/Todo';
 import './TodoComp.css';
 
@@ -7,9 +7,7 @@ interface TodoProps {
   onCheckedChange: (todoId: number) => void;
 }
 
-function TodoComp(props: TodoProps): JSX.Element {
-  const { todo, onCheckedChange } = props;
-
+function TodoComp({ todo, onCheckedChange }: TodoProps): JSX.Element {
   console.log('todo rendered');
 
   return (
@@ -34,4 +32,4 @@ function TodoComp(props: TodoProps): JSX.Element {
   );
 }
 
-export default TodoComp;
+export default memo(TodoComp);
