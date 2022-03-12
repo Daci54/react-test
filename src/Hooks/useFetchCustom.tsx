@@ -1,7 +1,7 @@
 import { DependencyList, useEffect, useState } from 'react';
 import { RequestState } from '../Models/RequestState';
 
-export default function useFetch<T = unknown>(
+export default function useFetchCustom<T = unknown>(
   url?: string,
   deps: DependencyList = []
 ): RequestState<T> {

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Todo } from '../../Models/Todo';
 import TodoComp from '../Todo/TodoComp';
-import useFetch from '../../Hooks/useFetch';
+import useFetchCustom from '../../Hooks/useFetchCustom';
 
 export function TodoList(): JSX.Element {
   const [count, setCounter] = useState(0);
-  const [requestUrl, setRequestUrl] = useState<string>(
+  const [requestUrl] = useState<string>(
     'https://jsonplaceholder.typicode.com/users/1/todos'
   );
   const {
@@ -13,7 +13,7 @@ export function TodoList(): JSX.Element {
     error,
     fetchedData: todos,
     setFetchedData: setTodos,
-  } = useFetch<Todo[]>(requestUrl);
+  } = useFetchCustom<Todo[]>(requestUrl);
 
   function changeCompleteState(todoId: number): void {
     if (todos) {
