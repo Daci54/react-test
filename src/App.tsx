@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '@progress/kendo-theme-default/dist/all.css';
 import './App.css';
-import TodoList from './Components/TodoList/TodoList';
+import ProductGrid from './Components/ProductGrid/ProductGrid';
 
 function App(): JSX.Element {
   const [count, setCounter] = useState(0);
@@ -13,7 +13,7 @@ function App(): JSX.Element {
         Increase counter
       </button>
       <h2>{count}</h2>
-      <TodoList />
+      <ProductGrid />
     </div>
   );
 }
