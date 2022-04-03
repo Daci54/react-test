@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '@progress/kendo-theme-default/dist/all.css';
 import './App.css';
 import TodoList from './Components/TodoList/TodoList';
 
