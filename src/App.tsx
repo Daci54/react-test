@@ -1,12 +1,12 @@
 import React from 'react';
 import '@progress/kendo-theme-default/dist/all.css';
 import './App.css';
-import ProductGrid from './Components/ProductGrid/ProductGrid';
+import TodoGrid from './Components/TodoGrid/TodoGrid';
 
 function App(): JSX.Element {
   return (
     <div className='app-container'>
-      <ProductGrid />
+      <TodoGrid />
     </div>
   );
 }
