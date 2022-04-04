@@ -3,28 +3,44 @@
     "userId": 1,
     "id": 1,
     "title": "delectus aut autem",
-    "completed": false,
-    "created": "2022-04-03"
+    "completed": true,
+    "created": "2022-04-03",
+    "status": {
+      "priority": 2,
+      "name": "Completed"
+    }
   },
   {
     "userId": 1,
     "id": 2,
     "title": "quis ut nam facilis et officia qui",
     "completed": false,
-    "created": "2022-02-13"
+    "created": "2022-02-13",
+    "status": {
+      "priority": 1,
+      "name": "Not Started"
+    }
   },
   {
     "userId": 1,
     "id": 3,
     "title": "fugiat veniam minus",
     "completed": false,
-    "created": "2022-03-25"
+    "created": "2022-03-25",
+    "status": {
+      "priority": 1,
+      "name": "Not Started"
+    }
   },
   {
     "userId": 1,
     "id": 4,
     "title": "et porro tempora",
     "completed": true,
-    "created": "2022-05-03"
+    "created": "2022-05-03",
+    "status": {
+      "priority": 1,
+      "name": "In Progress"
+    }
   }
 ]
