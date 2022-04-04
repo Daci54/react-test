@@ -3,7 +3,7 @@ import {
   Grid,
   GridColumn,
   GridDataStateChangeEvent,
-  GridRowClickEvent,
+  GridSelectionChangeEvent,
 } from '@progress/kendo-react-grid';
 import todosJson from '../../DummyData/todos.json';
 import { DataResult, process, State } from '@progress/kendo-data-query';
@@ -29,14 +29,30 @@ function TodoGrid(): JSX.Element {
     setResult(process<GridTodo>(gridTodos, dataState));
   }, [gridTodos]);
 
+  useEffect(() => {
+    setGridTodoSelection();
+  }, [selectedGridTodoId]);
+
+  function setGridTodoSelection(): void {
+    setGridTodos((gridTodos: GridTodo[]) =>
+      gridTodos.map((gridTodo: GridTodo) =>
+        gridTodo.id === selectedGridTodoId
+          ? { ...gridTodo, selected: true }
+          : { ...gridTodo, selected: false }
+      )
+    );
+  }
+
   function onDataStateChange(event: GridDataStateChangeEvent): void {
     setDataState(event.dataState);
     setResult(process<GridTodo>(gridTodos, event.dataState));
   }
 
-  function onRowSelection(event: GridRowClickEvent): void {
-    const gridTodo: GridTodo = event.dataItem;
-    setSelectedGridTodoId(gridTodo.id);
+  function onRowSelection(event: GridSelectionChangeEvent): void {
+    const gridTodo: GridTodo = event.dataItem as GridTodo;
+    if (gridTodo) {
+      setSelectedGridTodoId(gridTodo.id);
+    }
   }
 
   function parseTodos(): GridTodo[] {
@@ -45,6 +61,7 @@ function TodoGrid(): JSX.Element {
       return {
         ...todo,
         created: todo.created ? generateDate(todo.created) : undefined,
+        selected: false,
       };
     });
   }
@@ -59,18 +76,18 @@ function TodoGrid(): JSX.Element {
         onDataStateChange={(e: GridDataStateChangeEvent) =>
           onDataStateChange(e)
         }
-        onRowClick={(event: GridRowClickEvent) => onRowSelection(event)}
+        onSelectionChange={(e: GridSelectionChangeEvent) => onRowSelection(e)}
+        selectable={{ mode: 'single' }}
+        selectedField={'selected'}
       >
+        <GridColumn field={'selected'} />
         <GridColumn field={'id'} />
         <GridColumn field={'title'} />
         <GridColumn field={'completed'} />
         <GridColumn field={'status.name'} title={'status'} />
         <GridColumn field={'created'} filter={'date'} format='{0:d}' />
       </Grid>
-      <pre>
-        {selectedGridTodoId &&
-          JSON.stringify(gridTodos[selectedGridTodoId - 1])}
-      </pre>
+      <pre>{selectedGridTodoId && JSON.stringify(selectedGridTodoId)}</pre>
     </div>
   );
 }
