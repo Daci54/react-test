@@ -13,11 +13,13 @@ import { generateDate } from '../../Helper/Helper';
 
 function TodoGrid(): JSX.Element {
   const [gridTodos, setGridTodos] = useState<GridTodo[]>([]);
-  const [dataState, setDataState] = useState<State>({});
+  const [dataState, setDataState] = useState<State>({
+    sort: [{ field: 'status.priority', dir: 'asc' }],
+  });
   const [result, setResult] = useState<DataResult>(
     process<GridTodo>(gridTodos, dataState)
   );
-  const [visible, setVisible] = useState<boolean>(false);
+  const [selectedGridTodoId, setSelectedGridTodoId] = useState<number>();
 
   useEffect(() => {
     setGridTodos(parseTodos());
@@ -34,8 +36,7 @@ function TodoGrid(): JSX.Element {
 
   function onRowSelection(event: GridRowClickEvent): void {
     const gridTodo: GridTodo = event.dataItem;
-    console.log(gridTodo.id);
-    setVisible(true);
+    setSelectedGridTodoId(gridTodo.id);
   }
 
   function parseTodos(): GridTodo[] {
@@ -48,12 +49,9 @@ function TodoGrid(): JSX.Element {
     });
   }
 
-  console.log(result);
-
   return (
-    <>
+    <div>
       <Grid
-        style={{ height: '400px' }}
         filterable={true}
         sortable={true}
         data={result}
@@ -66,10 +64,14 @@ function TodoGrid(): JSX.Element {
         <GridColumn field={'id'} />
         <GridColumn field={'title'} />
         <GridColumn field={'completed'} />
+        <GridColumn field={'status.name'} title={'status'} />
         <GridColumn field={'created'} filter={'date'} format='{0:d}' />
       </Grid>
-      <pre>{String(visible)}</pre>
-    </>
+      <pre>
+        {selectedGridTodoId &&
+          JSON.stringify(gridTodos[selectedGridTodoId - 1])}
+      </pre>
+    </div>
   );
 }
 
