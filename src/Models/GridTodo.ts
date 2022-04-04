@@ -1,7 +1,7 @@
-export interface Todo {
+export interface GridTodo {
   userId: number;
   id: number;
   title: string;
   completed: boolean;
-  created: string;
+  created?: Date;
 }
