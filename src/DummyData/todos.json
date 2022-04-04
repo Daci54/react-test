@@ -5,6 +5,7 @@
     "title": "delectus aut autem",
     "completed": true,
     "created": "2022-04-03",
+    "selected": false,
     "status": {
       "priority": 2,
       "name": "Completed"
@@ -16,6 +17,7 @@
     "title": "quis ut nam facilis et officia qui",
     "completed": false,
     "created": "2022-02-13",
+    "selected": false,
     "status": {
       "priority": 1,
       "name": "Not Started"
@@ -27,6 +29,7 @@
     "title": "fugiat veniam minus",
     "completed": false,
     "created": "2022-03-25",
+    "selected": false,
     "status": {
       "priority": 1,
       "name": "Not Started"
@@ -38,6 +41,7 @@
     "title": "et porro tempora",
     "completed": true,
     "created": "2022-05-03",
+    "selected": false,
     "status": {
       "priority": 1,
       "name": "In Progress"
