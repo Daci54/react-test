@@ -11,6 +11,7 @@ import {
   State,
 } from '@progress/kendo-data-query';
 import { GridTodo } from '../../Models/GridTodo';
+import useSelected from '../../Hooks/useSelected';
 
 interface TodoGridProps {
   fetchedGridTodos: GridTodo[];
@@ -25,6 +26,12 @@ function TodoGrid({ fetchedGridTodos }: TodoGridProps): JSX.Element {
   const [initialGridTodos, setInitialGridTodos] =
     useState<GridTodo[]>(fetchedGridTodos);
   const [displayedGridTodos, setDisplayedGridTodos] = useState<DataResult>();
+  const {
+    dataItemKey,
+    selectedField,
+    onSelectionChange,
+    onHeaderSelectionChange,
+  } = useSelected(setInitialGridTodos, 'id', 'selected');
 
   useEffect(() => {
     setDisplayedGridTodos(
@@ -55,8 +62,10 @@ function TodoGrid({ fetchedGridTodos }: TodoGridProps): JSX.Element {
         {...sortFilterPagingState}
         onDataStateChange={onDataStateChange}
         onRowClick={onRowSelection}
-        dataItemKey={'id'}
-        selectedField={'selected'}
+        onSelectionChange={onSelectionChange}
+        onHeaderSelectionChange={onHeaderSelectionChange}
+        dataItemKey={dataItemKey}
+        selectedField={selectedField}
       >
         <GridColumn field={'selected'} />
         <GridColumn field={'id'} />
