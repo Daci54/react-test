@@ -5,6 +5,6 @@ export interface Todo {
   id: number;
   title: string;
   completed: boolean;
-  created: string;
-  status: TodoStatus;
+  created: string | null;
+  status: TodoStatus | null;
 }

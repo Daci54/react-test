@@ -5,7 +5,7 @@ export interface GridTodo {
   id: number;
   title: string;
   completed: boolean;
-  created?: Date;
+  created: Date | null;
   selected: boolean;
-  status: TodoStatus;
+  status: TodoStatus | null;
 }
