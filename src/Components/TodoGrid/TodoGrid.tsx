@@ -3,67 +3,44 @@ import {
   Grid,
   GridColumn,
   GridDataStateChangeEvent,
+  GridRowClickEvent,
   GridSelectionChangeEvent,
 } from '@progress/kendo-react-grid';
-import todosJson from '../../DummyData/todos.json';
-import { DataResult, process, State } from '@progress/kendo-data-query';
-import { Todo } from '../../Models/Todo';
+import {
+  DataResult,
+  process as applySortFilterPaging,
+  State,
+} from '@progress/kendo-data-query';
 import { GridTodo } from '../../Models/GridTodo';
-import { generateDate } from '../../Helper/Helper';
 
-function TodoGrid(): JSX.Element {
-  const [gridTodos, setGridTodos] = useState<GridTodo[]>([]);
-  const [dataState, setDataState] = useState<State>({
+interface TodoGridProps {
+  gridTodos: GridTodo[];
+}
+
+function TodoGrid({ gridTodos }: TodoGridProps): JSX.Element {
+  const [sortFilterPagingState, setSortFilterPagingState] = useState<State>({
     sort: [{ field: 'status.priority', dir: 'asc' }],
+    skip: 0,
+    take: 20,
   });
-  const [result, setResult] = useState<DataResult>(
-    process<GridTodo>(gridTodos, dataState)
-  );
-  const [selectedGridTodoId, setSelectedGridTodoId] = useState<number>();
+  const [displayedGridTodos, setDisplayedGridTodos] = useState<DataResult>();
 
   useEffect(() => {
-    setGridTodos(parseTodos());
-  }, []);
-
-  useEffect(() => {
-    setResult(process<GridTodo>(gridTodos, dataState));
+    setDisplayedGridTodos(
+      applySortFilterPaging<GridTodo>(gridTodos, sortFilterPagingState)
+    );
   }, [gridTodos]);
 
-  useEffect(() => {
-    setGridTodoSelection();
-  }, [selectedGridTodoId]);
-
-  function setGridTodoSelection(): void {
-    setGridTodos((gridTodos: GridTodo[]) =>
-      gridTodos.map((gridTodo: GridTodo) =>
-        gridTodo.id === selectedGridTodoId
-          ? { ...gridTodo, selected: true }
-          : { ...gridTodo, selected: false }
-      )
+  function onDataStateChange(event: GridDataStateChangeEvent): void {
+    setSortFilterPagingState(event.dataState);
+    setDisplayedGridTodos(
+      applySortFilterPaging<GridTodo>(gridTodos, event.dataState)
     );
   }
 
-  function onDataStateChange(event: GridDataStateChangeEvent): void {
-    setDataState(event.dataState);
-    setResult(process<GridTodo>(gridTodos, event.dataState));
-  }
-
-  function onRowSelection(event: GridSelectionChangeEvent): void {
+  function onRowSelection(event: GridRowClickEvent): void {
     const gridTodo: GridTodo = event.dataItem as GridTodo;
-    if (gridTodo) {
-      setSelectedGridTodoId(gridTodo.id);
-    }
-  }
-
-  function parseTodos(): GridTodo[] {
-    const todos: Todo[] = todosJson;
-    return todos.map((todo: Todo) => {
-      return {
-        ...todo,
-        created: todo.created ? generateDate(todo.created) : undefined,
-        selected: false,
-      };
-    });
+    console.log(gridTodo);
   }
 
   return (
@@ -71,13 +48,13 @@ function TodoGrid(): JSX.Element {
       <Grid
         filterable={true}
         sortable={true}
-        data={result}
-        {...dataState}
-        onDataStateChange={(e: GridDataStateChangeEvent) =>
-          onDataStateChange(e)
-        }
-        onSelectionChange={(e: GridSelectionChangeEvent) => onRowSelection(e)}
-        selectable={{ mode: 'single' }}
+        selectable={{ mode: 'multiple' }}
+        pageable={true}
+        data={displayedGridTodos}
+        {...sortFilterPagingState}
+        onDataStateChange={onDataStateChange}
+        onRowClick={onRowSelection}
+        dataItemKey={'id'}
         selectedField={'selected'}
       >
         <GridColumn field={'selected'} />
@@ -87,7 +64,6 @@ function TodoGrid(): JSX.Element {
         <GridColumn field={'status.name'} title={'status'} />
         <GridColumn field={'created'} filter={'date'} format='{0:d}' />
       </Grid>
-      <pre>{selectedGridTodoId && JSON.stringify(selectedGridTodoId)}</pre>
     </div>
   );
 }
