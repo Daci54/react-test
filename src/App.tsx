@@ -21,7 +21,7 @@ function App(): JSX.Element {
 
   return (
     <div className='app-container'>
-      {gridTodos && <TodoGrid gridTodos={gridTodos} />}
+      {gridTodos && <TodoGrid fetchedGridTodos={gridTodos} />}
     </div>
   );
 }
