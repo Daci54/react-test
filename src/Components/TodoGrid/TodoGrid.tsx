@@ -1,27 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Grid,
   GridColumn,
   GridDataStateChangeEvent,
 } from '@progress/kendo-react-grid';
-import {
-  DataResult,
-  process as applySortFilterPaging,
-  State,
-} from '@progress/kendo-data-query';
+import { DataResult } from '@progress/kendo-data-query';
 import { GridTodo } from '../../Models/GridTodo';
 import useSelected from '../../Hooks/useSelected';
+import useSortFilterPaging from '../../Hooks/useSortFilterPaging';
 
 interface TodoGridProps {
   fetchedGridTodos: GridTodo[];
 }
 
 function TodoGrid({ fetchedGridTodos }: TodoGridProps): JSX.Element {
-  const [sortFilterPagingState, setSortFilterPagingState] = useState<State>({
-    sort: [{ field: 'status.priority', dir: 'asc' }],
-    skip: 0,
-    take: 20,
-  });
   const [initialGridTodos, setInitialGridTodos] =
     useState<GridTodo[]>(fetchedGridTodos);
   const [displayedGridTodos, setDisplayedGridTodos] = useState<DataResult>();
@@ -32,12 +24,16 @@ function TodoGrid({ fetchedGridTodos }: TodoGridProps): JSX.Element {
     onHeaderSelectionChange,
     onRowClick,
   } = useSelected(setInitialGridTodos, 'id', 'selected');
-
-  useEffect(() => {
-    setDisplayedGridTodos(
-      applySortFilterPaging<GridTodo>(initialGridTodos, sortFilterPagingState)
+  const { sortFilterPagingState, setSortFilterPagingState } =
+    useSortFilterPaging(
+      {
+        sort: [{ field: 'status.priority', dir: 'asc' }],
+        skip: 0,
+        take: 20,
+      },
+      initialGridTodos,
+      setDisplayedGridTodos
     );
-  }, [initialGridTodos, sortFilterPagingState]);
 
   function onDataStateChange(event: GridDataStateChangeEvent): void {
     setSortFilterPagingState(event.dataState);
