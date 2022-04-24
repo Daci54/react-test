@@ -3,7 +3,6 @@ import {
   Grid,
   GridColumn,
   GridDataStateChangeEvent,
-  GridRowClickEvent,
 } from '@progress/kendo-react-grid';
 import {
   DataResult,
@@ -31,24 +30,17 @@ function TodoGrid({ fetchedGridTodos }: TodoGridProps): JSX.Element {
     selectedField,
     onSelectionChange,
     onHeaderSelectionChange,
+    onRowClick,
   } = useSelected(setInitialGridTodos, 'id', 'selected');
 
   useEffect(() => {
     setDisplayedGridTodos(
       applySortFilterPaging<GridTodo>(initialGridTodos, sortFilterPagingState)
     );
-  }, [initialGridTodos]);
+  }, [initialGridTodos, sortFilterPagingState]);
 
   function onDataStateChange(event: GridDataStateChangeEvent): void {
     setSortFilterPagingState(event.dataState);
-    setDisplayedGridTodos(
-      applySortFilterPaging<GridTodo>(initialGridTodos, event.dataState)
-    );
-  }
-
-  function onRowSelection(event: GridRowClickEvent): void {
-    const gridTodo: GridTodo = event.dataItem as GridTodo;
-    console.log(gridTodo);
   }
 
   return (
@@ -61,7 +53,7 @@ function TodoGrid({ fetchedGridTodos }: TodoGridProps): JSX.Element {
         data={displayedGridTodos}
         {...sortFilterPagingState}
         onDataStateChange={onDataStateChange}
-        onRowClick={onRowSelection}
+        onRowClick={onRowClick}
         onSelectionChange={onSelectionChange}
         onHeaderSelectionChange={onHeaderSelectionChange}
         dataItemKey={dataItemKey}

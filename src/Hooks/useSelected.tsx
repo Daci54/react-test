@@ -3,6 +3,7 @@ import { GridTodo } from '../Models/GridTodo';
 import {
   getSelectedState,
   GridHeaderSelectionChangeEvent,
+  GridRowClickEvent,
   GridSelectionChangeEvent,
 } from '@progress/kendo-react-grid';
 import { getter } from '@progress/kendo-data-query';
@@ -16,6 +17,7 @@ interface UseSelectedResponse {
   selectedField: string;
   onSelectionChange: (event: GridSelectionChangeEvent) => void;
   onHeaderSelectionChange: (event: GridHeaderSelectionChangeEvent) => void;
+  onRowClick: (event: GridRowClickEvent) => void;
 }
 
 function useSelected(
@@ -27,12 +29,14 @@ function useSelected(
   const idGetter = getter(dataItemKey);
 
   function onSelectionChange(event: GridSelectionChangeEvent): void {
-    const newSelectedState = getSelectedState({
-      event,
-      selectedState: selectedState,
-      dataItemKey: dataItemKey,
-    });
-    setSelectedState(newSelectedState);
+    if (event.dataItem !== null) {
+      const newSelectedState = getSelectedState({
+        event,
+        selectedState: selectedState,
+        dataItemKey: dataItemKey,
+      });
+      setSelectedState(newSelectedState);
+    }
   }
 
   function onHeaderSelectionChange(
@@ -49,6 +53,10 @@ function useSelected(
     setSelectedState(newSelectedState);
   }
 
+  function onRowClick(event: GridRowClickEvent): void {
+    console.log('row was clicked');
+  }
+
   useEffect(() => {
     setInitialDataItems((initialDataItems: any[]) => {
       return initialDataItems.map((initialDataItem: any) => {
@@ -58,15 +66,14 @@ function useSelected(
         };
       });
     });
-  }, [selectedState]);
-
-  console.log(selectedState);
+  }, [idGetter, selectedField, selectedState, setInitialDataItems]);
 
   return {
     dataItemKey,
     selectedField,
     onSelectionChange,
     onHeaderSelectionChange,
+    onRowClick,
   };
 }
 
