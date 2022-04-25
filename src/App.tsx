@@ -25,6 +25,7 @@ function App(): JSX.Element {
 
   return (
     <div className='app-container'>
+      <button onClick={() => setActiveFilters([])}>remove all filters</button>
       {activeFilters &&
         activeFilters.map((activeFilter: FilterDescriptor, index: number) => (
           <li
